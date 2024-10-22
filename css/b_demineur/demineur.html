@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    table,
+    td {
+        border: 1px solid #000;
+        border-collapse: collapse;
+    }
+
+    td {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .vert {
+        background-color: #7F7;
+    }
+</style>
+
+<body>
+    <div>
+        <h1>Régles de fonctionnement</h1>
+        <p>Appuyer sur "p" pour vocaliser la position du curseur.</p>
+        <p>Appuyer sur "d" pour poser un drapeau.</p>
+    </div>
+    <div id="idmessage" aria-live="assertive"></div>
+
+</body>
+
+</html>
+<script src="../_librairie/myconsole.class.js"></script>
+<script src="../_librairie/mylib.js"></script>
+<script>
+    let myconsole = new MyConsole();
+    /*
+    grille 10x10
+    nombre de mines : 10
+    Les mines sont placées au hasard sur la grille
+    Règle du jeu :
+    - le joueur clic sur une case :
+    - si il y a une mine : fin du jeu, le joueur a perdu, les mines retantes sont révélées.
+    - s'il n'y a pas de mines : afficher dans la case le nombre de mines voisines (0 et 8)
+    */
+
+    let maxx = 10;
+    let maxy = 10;
+    let nbMines = 10;
+    let curseur = {
+        x: 0,
+        y: 0
+    }
+    let nbCoups = 0;
+
+    //créer la grille
+    let grille = creerTable(maxy, maxx, document.body);
+    //active l'écouteur d'évenement
+    document.addEventListener("keydown", clavier);
+    //positionner le curseur
+    grille.rows[curseur.y].cells[curseur.x].classList.add("vert");
+    //tableau des mines
+    let mines = initMines();
+    myconsole.log(mines);
+
+    //gestion des évenements clavier
+    function clavier(e) {
+        //p : pour vocaliser la position du curseur
+        if (e.key == "p") {
+            vocaliser("ligne " + curseur.y + ", colonne " + curseur.x);
+            return;
+        }
+
+        //d: pour poser / retirer un drapeau
+        if (e.key == "d") {
+            let elt = grille.rows[curseur.y].cells[curseur.x];
+            if (!elt.dataset.flag || elt.dataset.flag == 0) {
+                elt.dataset.flag = 1;
+                elt.innerHTML = "<img src='flag.png' width='25' height='25' alt='Drapeau'>";
+                vocaliser("drapeau");
+            } else {
+                elt.dataset.flag = 0;
+                elt.innerHTML = "";
+                vocaliser("drapeau retiré");
+            }
+
+            return;
+        }
+
+        //espace : pour cliquer sur une cellule
+        if (e.key == " ") {
+            //si on clique sur une mine
+            if (contientMine(curseur.x, curseur.y)) {
+                afficherMines();
+                document.removeEventListener("keydown", clavier);
+                idmessage.innerHTML = "PERDU !";
+                //son d'explossion
+                let audio = document.createElement("audio");
+                audio.src = "bomb.mp3";
+                audio.play();
+            } else {
+                calculNbMines(curseur);    
+                vocaliser(grille.rows[curseur.y].cells[curseur.x].innerText);        
+
+                //test la fin du jeu
+                if (nbCoups == maxx * maxy - nbMines) {
+                    afficherMines();
+                    document.removeEventListener("keydown", clavier);
+                    idmessage.innerHTML = "GAGNE !";
+                    //son de la win
+                    let audio = document.createElement("audio");
+                    audio.src = "win.mp3";
+                    audio.play();
+                }
+            }
+            return;
+        }
+
+        let x = curseur.x;
+        let y = curseur.y;
+
+        if (e.key == "ArrowUp") {
+            if (y > 0) y--;
+        } else if (e.key == "ArrowDown") {
+            if (y < maxy - 1) y++;
+        } else if (e.key == "ArrowLeft") {
+            if (x > 0) x--;
+        } else if (e.key == "ArrowRight") {
+            if (x < maxx - 1) x++;
+        }
+
+        if (e.key == "ArrowUp" || e.key == "ArrowDown") e.preventDefault();
+        //déplacer le curseur
+        grille.rows[curseur.y].cells[curseur.x].classList.remove("vert");
+        curseur.x = x;
+        curseur.y = y;
+        grille.rows[curseur.y].cells[curseur.x].classList.add("vert");
+
+        let enfants = grille.rows[curseur.y].cells[curseur.x].children;
+        if (enfants.length == 1) {
+            vocaliser(enfants[0].alt);
+        } else {
+            vocaliser(grille.rows[curseur.y].cells[curseur.x].innerText);
+        }
+
+
+    }
+
+    function initMines() {
+        let tab = [];
+
+        while (tab.length < nbMines) {
+            let x = alea(0, maxx - 1);
+            let y = alea(0, maxy - 1);
+            let ok = true;
+            for (let i = 0; i < tab.length; i++) {
+                if (tab[i].x == x && tab[i].y == y) {
+                    ok = false;
+                    break;
+                }
+            }
+            if (ok)
+                tab.push({ x: x, y: y });
+        }
+
+        return tab;
+    }
+
+
+    /**
+     * Retourne vrai si il y a une mine en [x,y] sinon faux
+     **/
+    function contientMine(x, y) {
+        for (let i = 0; i < mines.length; i++) {
+            if (mines[i].x == x && mines[i].y == y)
+                return true;
+        }
+
+        return false;
+    }
+
+    //affiche toutes les mines dans la grille
+    function afficherMines() {
+        for (let i = 0; i < mines.length; i++) {
+            let m = mines[i];
+            grille.rows[m.y].cells[m.x].innerHTML = "<img src='mine.png' width='25' height='25' alt='Bombe'>";
+        }
+    }
+
+    //compte le nombre de mine autour du curseur
+    function calculNbMines(pos) {
+        if (pos.x<0 || pos.x>=maxx) return;
+        if (pos.y<0 || pos.y>=maxy) return;
+
+        if (grille.rows[pos.y].cells[pos.x].innerHTML != "") return;
+
+        let cpt = 0;
+        for (let a = -1; a <= 1; a++) {
+            for (let b = -1; b <= 1; b++) {
+                let x = pos.x + a;
+                let y = pos.y + b;
+                if (contientMine(x, y))
+                    cpt++;
+            }
+        }
+
+        grille.rows[pos.y].cells[pos.x].innerHTML = cpt;
+        nbCoups++;
+
+        if (cpt == 0) {
+            for (let a = -1; a <= 1; a++) {
+                for (let b = -1; b <= 1; b++) {
+                    let x = pos.x + a;
+                    let y = pos.y + b;
+                    calculNbMines({x:x,y:y});
+                }
+            }
+        }
+
+    }
+
+</script>

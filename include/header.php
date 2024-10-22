@@ -39,5 +39,8 @@
     <img class="phone" alt="logo phone" src="images/header/phone2.png" alt="logo phone" />06.14.24.47.29<br />
     <a href="https://www.linkedin.com/in/julien-silberstein-304b9773/?originalSubdomain=fr">
         <img class="linkedin" alt="logo linkedin" src="images/header/linkedin2.png" />
+    </a><br />
+    <a href="https://github.com/jujusilb">
+        <img class="GitHub" alt="logo GitHub" src="images/header/GitHub.png" />
     </a>
 </div>
