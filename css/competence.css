@@ -1,0 +1,44 @@
+.logoTag{
+    width:150px;
+}
+.logoHtml{
+    height: 60px;
+}
+.logoJs{
+    height: 60px;
+}
+
+.logoCss{
+    height: 60px;
+}
+.logoPhp{
+	width:80px;
+}
+.logoMariaDb{
+    height:65px;
+    width:80px;
+}
+.logoCpp{
+    width:60px;
+}
+.logoJava{
+   height:auto;
+   width: 60px;
+}
+
+.logoIcdl{
+    width: 200px;
+    border-bottom: 2px solid;;
+}
+.icdl-Logo{
+    width:60px;
+}
+.logoLang{
+    width:100px;
+}
+.logoVoltaire{
+    width: 100px;
+    padding-bottom: 15px;
+}
+
+

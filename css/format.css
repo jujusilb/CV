@@ -1,0 +1,49 @@
+.bigtitle{
+    border-bottom:3px solid;
+    color:white;
+}
+
+.lieu{
+    font-style: italic;
+    padding-left: 200px;
+}
+
+.name{
+    display:block;
+    color:#666666;
+    text-align:center;
+    font-weight:bold;
+    font-size: 2em;
+    padding-bottom: 10px;
+}
+
+.nameDiv{
+    display:block;
+    color:#666666;
+    text-align:center;
+    font-weight:bold;
+    font-size: 1.7em;
+    padding-bottom: 10px;
+}
+
+.subName{
+    display:block;
+    color:blue;
+    text-align:center;
+    font-weight:bold;
+    font-size: 1.5em;
+    position:relative;
+    bottom:30px;
+}
+
+.titreSkills{
+    border-bottom: 2px solid;;
+}
+
+.formTitre{
+    padding-left: 40px;
+}
+
+p{
+    margin:0px;
+}

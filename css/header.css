@@ -1,0 +1,91 @@
+.header{
+    margin:auto;
+    background: radial-gradient(closest-side, #003B00, #000000);
+    font-family:helvetica;
+    position:sticky;
+    top:0px;
+    display:flex;
+    flex-direction:row;
+    z-index:10;
+    justify-content:space-around;
+    align-items:center;
+    height:250px;
+    color:#FFF;
+    font-weight:bold;
+    width:80%;
+    border:1px solid black;
+    border-radius: 15px 15px 15px 15px;
+}
+
+.photo{
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.portrait{
+    width:150px;
+    border-radius:50% 50% 50% 50% / 50% 50% 50% 50%;
+    border:3px dotted black;
+}
+
+.portrait:hover{
+    width:250px ;
+    position:absolute;
+    top:0px;
+    border-radius:50% 50% 50% 50% / 50% 50% 50% 50%;
+    border:3px dotted black;
+    text-align:center;
+}
+
+.personne{
+    text-align:center;
+}
+
+.nom{
+    font-size:40px;
+    font-weight:bold;
+}
+
+.titre{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.about{
+}
+
+.home{
+    width:20px;
+    position:relative;
+    top:3px;
+
+}
+.age{
+    vertical-align:center;
+}
+.man{
+    width:10px;
+    position:relative;
+    top:5px;
+    left:7px;
+    padding-right:10px;
+}
+
+.contact{
+    opacity:1;
+}
+
+.email{
+    width:20px;
+}
+
+.phone{
+    width:20px;
+}
+
+.linkedin{
+    width:70px;
+}

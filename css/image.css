@@ -1,0 +1,11 @@
+.logoBox{
+    height:60px;
+    align-items: center;
+    /*position:relative;
+    bottom:15px;*/
+}
+
+.logoLoisirs{
+    width: 60px;
+    height: 60px;
+}

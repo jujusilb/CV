@@ -1,0 +1,16 @@
+@media screen and (max-width: 900px) {
+    .header{
+        margin:auto;
+        width:100%;
+        align-items:center;
+    }
+    
+    body{
+        width:100%;
+        align-items:center;
+    }
+    
+    .lieu{
+        padding-left:20px;
+    }
+}
